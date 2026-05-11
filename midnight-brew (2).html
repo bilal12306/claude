@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Midnight Brew — Brewed for Late Nights &amp; Slow Conversations</title>
+<meta name="description" content="Midnight Brew — Karachi's finest late-night café. Craft coffee, artisan pastries, warm amber atmosphere. Open 6PM–3AM daily.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================
+   RESET + CSS TOKENS
+   ===================================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg:      #080604;
+  --bg2:     #0F0B07;
+  --bg3:     #181008;
+  --gold:    #B8922A;
+  --goldL:   #D4AF5C;
+  --cream:   #FBF8F2;
+  --creamM:  rgba(251,248,242,.55);
+  --brown:   #3D2B1F;
+  --eE:      cubic-bezier(.16,1,.3,1);
+  --eP:      cubic-bezier(.25,.46,.45,.94);
+  --fd:      'Cormorant Garamond', Georgia, serif;
+  --fb:      'DM Sans', system-ui, sans-serif;
+}
+html { font-size: 16px; scroll-behavior: auto; }
+body {
+  background: var(--bg); color: var(--cream);
+  font-family: var(--fb); overflow-x: hidden; cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+@media (hover: none) { body { cursor: auto; } }
+a { color: inherit; text-decoration: none; }
+img { display: block; width: 100%; }
+button { background: none; border: none; font-family: var(--fb); cursor: pointer; padding: 0; }
+
+/* =====================================================
+   PRELOADER
+   ===================================================== */
+#pl {
+  position: fixed; inset: 0; background: var(--bg);
+  z-index: 9999; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity .9s var(--eP), visibility .9s;
+}
+#pl.out { opacity: 0; visibility: hidden; pointer-events: none; }
+.pl-logo {
+  font-family: var(--fd); font-size: clamp(1.6rem,4vw,2.8rem);
+  font-weight: 300; letter-spacing: .35em; color: var(--cream);
+  opacity: 0; transform: translateY(14px);
+  animation: plUp .8s var(--eE) .4s forwards;
+}
+.pl-sub {
+  font-size: .6rem; letter-spacing: .55em; text-transform: uppercase;
+  color: var(--gold); margin-top: .55rem;
+  opacity: 0; animation: plUp .8s var(--eE) .75s forwards;
+}
+.pl-track { width: 150px; height: 1px; background: rgba(255,255,255,.07); margin-top: 2.5rem; overflow: hidden; opacity: 0; animation: plFd .4s ease 1.05s forwards; }
+.pl-bar { height: 100%; width: 0; background: linear-gradient(to right,var(--brown),var(--gold)); animation: plBar 2.1s var(--eP) 1.15s forwards; }
+@keyframes plUp  { to { opacity: 1; transform: translateY(0); } }
+@keyframes plFd  { to { opacity: 1; } }
+@keyframes plBar { to { width: 100%; } }
+
+/* =====================================================
+   CURSOR
+   ===================================================== */
+#cd, #cr {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  z-index: 9990; transform: translate(-50%,-50%);
+  will-change: left,top; top: -200px; left: -200px;
+}
+#cd { width: 7px; height: 7px; background: var(--gold); transition: width .3s,height .3s,background .3s; }
+#cr { width: 34px; height: 34px; border: 1px solid rgba(184,146,42,.45); transition: width .45s var(--eE),height .45s var(--eE),border-color .3s; }
+body.ch #cd { width: 4px; height: 4px; background: var(--cream); }
+body.ch #cr { width: 56px; height: 56px; border-color: rgba(251,248,242,.3); }
+@media (hover: none) { #cd, #cr { display: none; } }
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.6rem clamp(1.5rem,5vw,4rem);
+  transition: padding .4s var(--eP), background .4s, border-color .4s;
+  border-bottom: 1px solid transparent;
+}
+#nav.sc {
+  background: rgba(8,6,4,.93); backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: .95rem clamp(1.5rem,5vw,4rem);
+  border-color: rgba(184,146,42,.07);
+}
+.nav-logo { font-family: var(--fd); font-size: 1.2rem; font-weight: 600; letter-spacing: .18em; color: var(--cream); position: relative; z-index: 510; flex-shrink: 0; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
+.nav-links a { font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--creamM); transition: color .3s; position: relative; }
+.nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .3s var(--eP); }
+.nav-links a:hover { color: var(--cream); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta { font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(184,146,42,.35); padding: .5rem 1.35rem; transition: background .3s,color .3s,border-color .3s; }
+.nav-cta:hover { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+
+.burger { display: none; flex-direction: column; gap: 5px; padding: 4px; position: relative; z-index: 510; }
+.burger span { display: block; width: 22px; height: 1px; background: var(--cream); transition: transform .4s var(--eE),opacity .3s,width .3s; transform-origin: center; }
+.burger.o span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger.o span:nth-child(2) { opacity: 0; width: 0; }
+.burger.o span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+#mmenu { position: fixed; inset: 0; background: var(--bg); z-index: 505; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; opacity: 0; visibility: hidden; transition: opacity .5s var(--eE),visibility .5s; }
+#mmenu.o { opacity: 1; visibility: visible; }
+#mmenu a { font-family: var(--fd); font-size: clamp(1.8rem,7vw,3rem); font-weight: 300; letter-spacing: .08em; color: var(--creamM); transition: color .3s; }
+#mmenu a:hover { color: var(--gold); }
+@media (max-width: 768px) { .nav-links, .nav-cta { display: none; } .burger { display: flex; } }
+
+/* =====================================================
+   HERO
+   ===================================================== */
+#hero { position: relative; height: 100svh; min-height: 580px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 65% 55% at 25% 65%,rgba(120,75,30,.28) 0%,transparent 65%), radial-gradient(ellipse 45% 35% at 82% 22%,rgba(184,146,42,.09) 0%,transparent 60%), linear-gradient(160deg,#0C0804 0%,#150F07 55%,#090605 100%); }
+#hcanvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .7; }
+.hero-grain { position: absolute; inset: 0; pointer-events: none; opacity: .04; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 200px; }
+.hero-ov { position: absolute; inset: 0; background: linear-gradient(to bottom,rgba(8,6,4,.25) 0%,rgba(8,6,4,0) 25%,rgba(8,6,4,0) 60%,rgba(8,6,4,.9) 100%); }
+.hglow { position: absolute; border-radius: 50%; pointer-events: none; }
+.hglow-a { width: min(600px,60vw); height: min(600px,60vw); background: radial-gradient(circle,rgba(180,120,40,.14) 0%,transparent 70%); top: 3%; left: -10%; animation: gf 9s ease-in-out infinite alternate; }
+.hglow-b { width: min(380px,40vw); height: min(380px,40vw); background: radial-gradient(circle,rgba(139,80,35,.17) 0%,transparent 70%); bottom: 6%; right: -5%; animation: gf 11s ease-in-out infinite alternate-reverse; }
+@keyframes gf { from{transform:translate(0,0) scale(1)} to{transform:translate(22px,-16px) scale(1.08)} }
+.hero-content { position: relative; z-index: 2; text-align: center; max-width: min(920px,92vw); padding: 0 1.5rem; }
+.h-eye { font-size: .6rem; letter-spacing: .55em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.6rem; display: block; opacity: 0; }
+.h-title { font-family: var(--fd); font-size: clamp(3.5rem,12vw,10rem); font-weight: 300; line-height: .88; color: var(--cream); letter-spacing: -.01em; margin-bottom: 1.8rem; }
+.h-title .tl { display: block; overflow: hidden; }
+.h-title .ti { display: block; transform: translateY(110%); }
+.h-sub { font-family: var(--fd); font-size: clamp(.95rem,2.5vw,1.35rem); font-weight: 300; font-style: italic; color: var(--creamM); letter-spacing: .04em; margin-bottom: 3rem; opacity: 0; }
+.h-btn { display: inline-block; font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--cream); border: 1px solid rgba(251,248,242,.28); padding: 1rem 2.8rem; position: relative; overflow: hidden; opacity: 0; transition: color .4s,border-color .4s; }
+.h-btn::before { content: ''; position: absolute; inset: 0; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .4s var(--eP); z-index: 0; }
+.h-btn:hover { color: var(--bg); border-color: var(--gold); }
+.h-btn:hover::before { transform: scaleX(1); }
+.h-btn-text { position: relative; z-index: 1; }
+.h-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .4rem; opacity: 0; z-index: 2; }
+.h-scroll-lbl { font-size: .56rem; letter-spacing: .35em; text-transform: uppercase; color: rgba(251,248,242,.3); }
+.scroll-line { width: 1px; height: 44px; background: linear-gradient(to bottom,var(--gold),transparent); animation: sLine 2.2s ease infinite; }
+@keyframes sLine { 0%,100%{opacity:.2;transform:scaleY(.4);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} }
+
+/* =====================================================
+   SHARED ATOMS
+   ===================================================== */
+.s-eye { display: block; font-size: .6rem; letter-spacing: .5em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.s-title { font-family: var(--fd); font-size: clamp(2.2rem,5vw,4rem); font-weight: 300; line-height: 1.1; color: var(--cream); }
+.s-divider { width: 50px; height: 1px; background: var(--gold); margin: 2rem 0; }
+.rv { opacity: 0; transform: translateY(46px); }
+
+/* =====================================================
+   ABOUT
+   ===================================================== */
+#about { padding: clamp(5rem,10vw,10rem) clamp(1.5rem,6vw,5rem); overflow: hidden; }
+.about-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(2rem,6vw,8rem); align-items: center; }
+.about-yr { font-family: var(--fd); font-size: clamp(5rem,16vw,14rem); font-weight: 300; color: transparent; -webkit-text-stroke: 1px rgba(184,146,42,.18); line-height: 1; letter-spacing: -.04em; user-select: none; }
+.about-p { font-size: clamp(.84rem,1.5vw,.95rem); line-height: 1.95; color: var(--creamM); margin-bottom: 1.4rem; }
+.about-stats { display: flex; flex-wrap: wrap; gap: clamp(1.5rem,4vw,2.5rem); margin-top: 2.5rem; }
+.stat-num { display: block; font-family: var(--fd); font-size: clamp(1.8rem,3vw,2.5rem); font-weight: 300; color: var(--gold); line-height: 1; }
+.stat-lbl { font-size: .63rem; letter-spacing: .15em; text-transform: uppercase; color: var(--creamM); margin-top: .3rem; }
+@media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+/* =====================================================
+   MENU
+   ===================================================== */
+#menu { padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,5rem); background: var(--bg2); }
+.menu-hd { text-align: center; margin-bottom: clamp(3rem,6vw,5rem); }
+.tab-outer { display: flex; justify-content: center; margin-bottom: clamp(2.5rem,5vw,4rem); }
+.tab-wrap { display: inline-flex; position: relative; border: 1px solid rgba(184,146,42,.2); }
+.mtab { padding: .72rem 2.1rem; font-size: .66rem; letter-spacing: .25em; text-transform: uppercase; color: var(--creamM); position: relative; z-index: 1; transition: color .3s; }
+.mtab.on { color: var(--bg); }
+.t-ink { position: absolute; top: 0; left: 0; height: 100%; background: var(--gold); z-index: 0; transition: transform .4s var(--eE),width .4s var(--eE); }
+.mpanel { display: none; grid-template-columns: repeat(auto-fill,minmax(min(290px,100%),1fr)); gap: 1.5px; max-width: 1350px; margin: 0 auto; }
+.mpanel.on { display: grid; }
+.mc { background: var(--bg3); overflow: hidden; border: 1px solid rgba(255,255,255,.025); transition: background .35s; }
+.mc:hover { background: #1E1109; }
+.mc-img-wrap { overflow: hidden; height: clamp(145px,20vw,195px); }
+.mc-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.82) saturate(.85); transition: filter .5s,transform .7s var(--eE); }
+.mc:hover .mc-img-wrap img { filter: brightness(.96) saturate(1.1); transform: scale(1.07); }
+.mc-body { padding: 1.4rem; }
+.mc-num { font-family: var(--fd); font-size: .63rem; letter-spacing: .2em; color: var(--gold); margin-bottom: .4rem; }
+.mc-name { font-family: var(--fd); font-size: clamp(1.1rem,2vw,1.5rem); font-weight: 400; color: var(--cream); margin-bottom: .5rem; }
+.mc-desc { font-size: .78rem; line-height: 1.7; color: var(--creamM); margin-bottom: 1.4rem; }
+.mc-foot { display: flex; justify-content: space-between; align-items: center; }
+.mc-price { font-family: var(--fd); font-size: 1.2rem; color: var(--goldL); }
+.mc-cta { font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; color: var(--creamM); border-bottom: 1px solid rgba(251,248,242,.18); padding-bottom: 2px; transition: color .3s,border-color .3s; }
+.mc:hover .mc-cta { color: var(--gold); border-color: var(--gold); }
+@media (max-width: 768px) { .mpanel.on { grid-template-columns: 1fr; } .mtab { padding: .65rem 1.4rem; } }
+
+/* =====================================================
+   GALLERY
+   ===================================================== */
+#gallery { padding: clamp(5rem,10vw,9rem) clamp(1.5rem,4vw,4rem); }
+.gal-hd { text-align: center; margin-bottom: clamp(3rem,6vw,5rem); }
+.gal-grid { columns: 3; column-gap: 2px; max-width: 1400px; margin: 0 auto; }
+.gi { break-inside: avoid; margin-bottom: 2px; overflow: hidden; position: relative; }
+.gi img { width: 100%; display: block; filter: brightness(.72) saturate(.8); transition: filter .6s var(--eP),transform .7s var(--eE); }
+.gi:hover img { filter: brightness(.9) saturate(1.1); transform: scale(1.06); }
+.gi-ov { position: absolute; inset: 0; background: linear-gradient(to top,rgba(8,6,4,.82) 0%,transparent 55%); opacity: 0; transition: opacity .4s; display: flex; align-items: flex-end; padding: 1.2rem; }
+.gi:hover .gi-ov { opacity: 1; }
+.gi-cap { font-family: var(--fd); font-size: 1rem; font-style: italic; color: var(--cream); }
+@media (max-width: 900px) { .gal-grid { columns: 2; } }
+@media (max-width: 560px) { .gal-grid { columns: 1; } }
+
+/* =====================================================
+   TESTIMONIALS
+   ===================================================== */
+#testimonials { padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,5rem); background: var(--bg2); overflow: hidden; }
+.test-hd { text-align: center; margin-bottom: clamp(3rem,6vw,5rem); }
+.test-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(1rem,2vw,2rem); max-width: 1200px; margin: 0 auto; }
+.tc { background: rgba(255,255,255,.018); border: 1px solid rgba(184,146,42,.1); padding: clamp(1.4rem,3vw,2.4rem); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: border-color .4s,transform .45s var(--eE); }
+.tc:hover { border-color: rgba(184,146,42,.28); transform: translateY(-8px); }
+.tc-q { font-family: var(--fd); font-size: 2.6rem; line-height: 1; color: var(--gold); opacity: .32; margin-bottom: .5rem; }
+.tc-stars { display: flex; gap: 3px; margin-bottom: 1.1rem; }
+.tc-stars span { color: var(--gold); font-size: .78rem; }
+.tc-tx { font-family: var(--fd); font-size: clamp(.92rem,1.5vw,1.04rem); font-style: italic; line-height: 1.85; color: var(--creamM); margin-bottom: 1.8rem; }
+.tc-au { display: flex; align-items: center; gap: .85rem; }
+.tc-av { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg,rgba(184,146,42,.2),var(--brown)); border: 1px solid rgba(184,146,42,.25); display: flex; align-items: center; justify-content: center; font-family: var(--fd); font-size: .95rem; color: var(--goldL); }
+.tc-name { font-size: .85rem; font-weight: 500; color: var(--cream); }
+.tc-meta { font-size: .65rem; color: var(--gold); letter-spacing: .08em; margin-top: 2px; }
+@media (max-width: 900px) { .test-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .test-grid { grid-template-columns: 1fr; } }
+
+/* =====================================================
+   CONTACT / RESERVATION
+   ===================================================== */
+#contact { padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,5rem); }
+.con-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(3rem,8vw,9rem); align-items: start; }
+.con-heading { font-family: var(--fd); font-size: clamp(2.2rem,4vw,3.5rem); font-weight: 300; line-height: 1.15; color: var(--cream); margin-bottom: 2rem; }
+.con-det { margin-bottom: 1.4rem; }
+.con-det-lbl { font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: .28rem; }
+.con-det-val { font-family: var(--fd); font-size: 1.05rem; font-style: italic; color: var(--creamM); }
+.con-form { display: flex; flex-direction: column; gap: 1.2rem; }
+.fg label { display: block; font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: .45rem; }
+.fg input, .fg textarea, .fg select {
+  width: 100%; background: rgba(255,255,255,.025);
+  border: 1px solid rgba(184,146,42,.14); color: var(--cream);
+  font-family: var(--fb); font-size: .88rem;
+  padding: .88rem 1.1rem; outline: none;
+  transition: border-color .3s; resize: none;
+  -webkit-appearance: none; border-radius: 0;
+}
+.fg select { cursor: pointer; }
+.fg select option { background: var(--bg3); color: var(--cream); }
+.fg input:focus, .fg textarea:focus, .fg select:focus { border-color: rgba(184,146,42,.45); }
+.fg input::placeholder, .fg textarea::placeholder { color: rgba(251,248,242,.18); }
+.fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.con-submit {
+  display: inline-flex; align-items: center; gap: .7rem;
+  font-size: .66rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--bg); background: var(--gold);
+  padding: 1.05rem 2.3rem; align-self: flex-start;
+  transition: background .3s,transform .25s,opacity .3s;
+}
+.con-submit:hover { background: var(--goldL); transform: translateY(-2px); }
+.con-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* Form feedback */
+.form-msg {
+  padding: .85rem 1.1rem; font-size: .8rem; line-height: 1.5;
+  display: none; margin-top: .5rem;
+}
+.form-msg.success { background: rgba(0,160,80,.12); border: 1px solid rgba(0,160,80,.25); color: #5ee0a0; display: block; }
+.form-msg.error   { background: rgba(220,50,50,.1);  border: 1px solid rgba(220,50,50,.25);  color: #f08080; display: block; }
+
+@media (max-width: 900px) { .con-grid { grid-template-columns: 1fr; gap: 3.5rem; } }
+@media (max-width: 480px) { .fg-row { grid-template-columns: 1fr; } }
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+footer { background: #050302; border-top: 1px solid rgba(184,146,42,.07); padding: 2.4rem clamp(1.5rem,5vw,5rem); }
+.foot-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.foot-logo { font-family: var(--fd); font-size: 1.05rem; font-weight: 600; letter-spacing: .15em; color: rgba(251,248,242,.32); }
+.foot-copy { font-size: .66rem; color: rgba(251,248,242,.2); letter-spacing: .08em; }
+.foot-socials { display: flex; gap: 1.5rem; }
+.foot-socials a { font-size: .63rem; letter-spacing: .15em; text-transform: uppercase; color: rgba(251,248,242,.32); transition: color .3s; }
+.foot-socials a:hover { color: var(--gold); }
+@media (max-width: 560px) { .foot-inner { flex-direction: column; text-align: center; } }
+
+/* =====================================================
+   AI CHATBOT WIDGET
+   ===================================================== */
+/* Floating help button */
+#chat-btn {
+  position: fixed; bottom: 2rem; right: 2rem;
+  z-index: 800;
+  display: flex; align-items: center; gap: .55rem;
+  background: var(--gold); color: var(--bg);
+  padding: .7rem 1.3rem;
+  font-size: .65rem; font-family: var(--fb);
+  letter-spacing: .18em; text-transform: uppercase;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(184,146,42,.35);
+  transition: background .3s, transform .3s var(--eE), box-shadow .3s;
+  cursor: pointer;
+}
+#chat-btn:hover { background: var(--goldL); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(184,146,42,.45); }
+#chat-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* Chat panel */
+#chat-panel {
+  position: fixed; bottom: 5.5rem; right: 2rem;
+  z-index: 799;
+  width: min(380px, calc(100vw - 2rem));
+  height: min(520px, 70svh);
+  background: #0E0B07;
+  border: 1px solid rgba(184,146,42,.2);
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6);
+  transform: translateY(20px) scale(.97);
+  opacity: 0; pointer-events: none;
+  transition: transform .4s var(--eE), opacity .4s, pointer-events 0s .4s;
+}
+#chat-panel.open {
+  transform: translateY(0) scale(1);
+  opacity: 1; pointer-events: all;
+  transition: transform .4s var(--eE), opacity .4s;
+}
+
+.chat-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid rgba(184,146,42,.12);
+  flex-shrink: 0;
+}
+.chat-head-left { display: flex; align-items: center; gap: .75rem; }
+.chat-av {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--brown), #4A3020);
+  border: 1px solid rgba(184,146,42,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fd); font-size: .85rem; color: var(--goldL);
+}
+.chat-brand { font-family: var(--fd); font-size: 1rem; font-weight: 600; letter-spacing: .08em; color: var(--cream); }
+.chat-status { font-size: .62rem; color: #5ee0a0; letter-spacing: .08em; margin-top: 1px; }
+.chat-close { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--creamM); font-size: 1rem; transition: color .3s; flex-shrink: 0; }
+.chat-close:hover { color: var(--cream); }
+
+.chat-msgs {
+  flex: 1; overflow-y: auto; padding: 1rem;
+  display: flex; flex-direction: column; gap: .75rem;
+  scrollbar-width: thin; scrollbar-color: rgba(184,146,42,.2) transparent;
+}
+.chat-msgs::-webkit-scrollbar { width: 4px; }
+.chat-msgs::-webkit-scrollbar-track { background: transparent; }
+.chat-msgs::-webkit-scrollbar-thumb { background: rgba(184,146,42,.2); border-radius: 2px; }
+
+.msg {
+  display: flex; flex-direction: column;
+  max-width: 85%; gap: .2rem;
+  animation: msgIn .3s var(--eE);
+}
+@keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.msg.user { align-self: flex-end; align-items: flex-end; }
+.msg.bot  { align-self: flex-start; align-items: flex-start; }
+
+.msg-bubble {
+  padding: .65rem .9rem;
+  font-size: .82rem; line-height: 1.6;
+  border-radius: 0;
+}
+.msg.user .msg-bubble { background: var(--gold); color: var(--bg); }
+.msg.bot  .msg-bubble { background: rgba(255,255,255,.05); color: var(--cream); border: 1px solid rgba(184,146,42,.1); }
+
+/* Typing indicator */
+.typing-dots {
+  display: flex; gap: 4px; padding: .65rem .9rem;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(184,146,42,.1);
+}
+.typing-dots span {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
+  animation: dot 1.2s ease infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .2s; }
+.typing-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes dot { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
+
+.chat-foot {
+  padding: .85rem 1rem;
+  border-top: 1px solid rgba(184,146,42,.1);
+  display: flex; gap: .6rem; flex-shrink: 0;
+}
+#chat-input {
+  flex: 1; background: rgba(255,255,255,.04); border: 1px solid rgba(184,146,42,.14);
+  color: var(--cream); font-family: var(--fb); font-size: .82rem;
+  padding: .65rem .9rem; outline: none;
+  transition: border-color .3s; border-radius: 0;
+}
+#chat-input:focus { border-color: rgba(184,146,42,.4); }
+#chat-input::placeholder { color: rgba(251,248,242,.2); }
+#chat-send {
+  width: 38px; height: 38px; background: var(--gold); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+  transition: background .3s, transform .2s;
+}
+#chat-send:hover { background: var(--goldL); transform: scale(1.05); }
+#chat-send:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="pl">
+  <div class="pl-logo">Midnight Brew</div>
+  <div class="pl-sub">Est. Midnight &nbsp;&middot;&nbsp; Karachi</div>
+  <div class="pl-track"><div class="pl-bar"></div></div>
+</div>
+
+<!-- CURSOR -->
+<div id="cd"></div><div id="cr"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Midnight <span>Brew</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Visit Us</a></li>
+  </ul>
+  <!-- FIX: href points to #contact (reservation section) -->
+  <a href="#contact" class="nav-cta">Reserve a Seat</a>
+  <button class="burger" id="brg" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mmenu" role="dialog" aria-label="Navigation">
+  <a href="#about">Story</a>
+  <a href="#menu">Menu</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#contact">Visit Us</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <canvas id="hcanvas" aria-hidden="true"></canvas>
+  <div class="hero-grain" aria-hidden="true"></div>
+  <div class="hglow hglow-a" aria-hidden="true"></div>
+  <div class="hglow hglow-b" aria-hidden="true"></div>
+  <div class="hero-ov" aria-hidden="true"></div>
+  <div class="hero-content">
+    <span class="h-eye">Karachi&rsquo;s Finest Late-Night Caf&eacute;</span>
+    <h1 class="h-title">
+      <span class="tl"><span class="ti">Midnight</span></span>
+      <span class="tl"><span class="ti">Brew</span></span>
+    </h1>
+    <p class="h-sub">&ldquo;Brewed for late nights &amp; slow conversations&rdquo;</p>
+    <!-- FIX: also points to #contact -->
+    <a href="#contact" class="h-btn"><span class="h-btn-text">Reserve a Seat</span></a>
+  </div>
+  <div class="h-scroll" aria-hidden="true">
+    <span class="h-scroll-lbl">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div><div class="about-yr rv">2019</div></div>
+    <div>
+      <span class="s-eye rv">Our Story</span>
+      <h2 class="s-title rv">Where the night<br>comes <em style="font-style:italic;color:var(--goldL)">alive</em></h2>
+      <div class="s-divider rv"></div>
+      <p class="about-p rv">Midnight Brew was born from one simple belief &mdash; the best conversations happen after midnight, over a perfectly crafted cup of coffee. We built a space where time slows down, the city hum fades, and every sip feels intentional.</p>
+      <p class="about-p rv">Nestled in DHA, Karachi, we open when others close. Our craft coffee, artisan pastries, and warm amber atmosphere invite you to stay a little longer &mdash; always.</p>
+      <div class="about-stats rv">
+        <div><span class="stat-num">6+</span><span class="stat-lbl">Years of craft</span></div>
+        <div><span class="stat-num">12k</span><span class="stat-lbl">Happy guests</span></div>
+        <div><span class="stat-num">3am</span><span class="stat-lbl">Closing time</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="menu-hd">
+    <span class="s-eye rv">Crafted with care</span>
+    <h2 class="s-title rv">Our Signature Menu</h2>
+  </div>
+  <div class="tab-outer">
+    <div class="tab-wrap" id="tabwrap">
+      <button class="mtab on" data-target="coffee">Coffee</button>
+      <button class="mtab"    data-target="bakery">Bakery</button>
+      <div class="t-ink" id="tink"></div>
+    </div>
+  </div>
+  <div class="mpanel on" id="p-coffee">
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&q=80&fit=crop" alt="Espresso" loading="lazy"></div><div class="mc-body"><div class="mc-num">01</div><div class="mc-name">Espresso</div><div class="mc-desc">Pure concentrated essence of single-origin beans. Intense, aromatic, unforgettable.</div><div class="mc-foot"><span class="mc-price">$3.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=600&q=80&fit=crop" alt="Cappuccino" loading="lazy"></div><div class="mc-body"><div class="mc-num">02</div><div class="mc-name">Cappuccino</div><div class="mc-desc">Classic Italian balance &mdash; rich espresso, steamed milk, and velvety microfoam in harmony.</div><div class="mc-foot"><span class="mc-price">$5.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1561047029-3000c68339ca?w=600&q=80&fit=crop" alt="Latte" loading="lazy"></div><div class="mc-body"><div class="mc-num">03</div><div class="mc-name">Latte</div><div class="mc-desc">Smooth, silky, comforting. Our latte art is as beautiful as it tastes.</div><div class="mc-foot"><span class="mc-price">$5.50</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&q=80&fit=crop" alt="Mocha" loading="lazy"></div><div class="mc-body"><div class="mc-num">04</div><div class="mc-name">Mocha</div><div class="mc-desc">Dark chocolate meets espresso &mdash; a cup that feels like a warm midnight hug.</div><div class="mc-foot"><span class="mc-price">$6.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1534040385115-33dcb3acba5b?w=600&q=80&fit=crop" alt="Cold Coffee" loading="lazy"></div><div class="mc-body"><div class="mc-num">05</div><div class="mc-name">Cold Coffee</div><div class="mc-desc">Slow-steeped, smooth, refreshing. The perfect companion for a warm late night.</div><div class="mc-foot"><span class="mc-price">$6.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1551030173-122aabc4489c?w=600&q=80&fit=crop" alt="Iced Spanish Latte" loading="lazy"></div><div class="mc-body"><div class="mc-num">06</div><div class="mc-name">Iced Spanish Latte</div><div class="mc-desc">Condensed milk sweetness meets bold espresso over ice. Our house signature.</div><div class="mc-foot"><span class="mc-price">$7.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+  </div>
+  <div class="mpanel" id="p-bakery">
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=600&q=80&fit=crop" alt="Chocolate Croissant" loading="lazy"></div><div class="mc-body"><div class="mc-num">01</div><div class="mc-name">Chocolate Croissant</div><div class="mc-desc">Flaky, golden, filled with dark Belgian chocolate. Baked fresh before midnight.</div><div class="mc-foot"><span class="mc-price">$4.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&q=80&fit=crop" alt="Cheesecake" loading="lazy"></div><div class="mc-body"><div class="mc-num">02</div><div class="mc-name">Cheesecake</div><div class="mc-desc">New York style with a toasted crust. Dense, creamy, and perfectly balanced.</div><div class="mc-foot"><span class="mc-price">$5.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=600&q=80&fit=crop" alt="Brownie" loading="lazy"></div><div class="mc-body"><div class="mc-num">03</div><div class="mc-name">Brownie</div><div class="mc-desc">Fudgy, dense, deeply chocolatey. Pairs perfectly with a 1am espresso.</div><div class="mc-foot"><span class="mc-price">$3.50</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+    <div class="mc rv"><div class="mc-img-wrap"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=80&fit=crop" alt="Cookies" loading="lazy"></div><div class="mc-body"><div class="mc-num">04</div><div class="mc-name">Cookies</div><div class="mc-desc">Warm, soft-centered, crispy-edged. Chocolate chip baked to midnight perfection.</div><div class="mc-foot"><span class="mc-price">$2.00</span><span class="mc-cta">Order &rarr;</span></div></div></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gal-hd"><span class="s-eye rv">The atmosphere</span><h2 class="s-title rv">A Space That Feels Like Home</h2></div>
+  <div class="gal-grid">
+    <div class="gi rv"><img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=700&q=85&fit=crop" alt="Café interior" loading="lazy"><div class="gi-ov"><span class="gi-cap">The interior</span></div></div>
+    <div class="gi rv"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=85&fit=crop" alt="Latte art" loading="lazy"><div class="gi-ov"><span class="gi-cap">Latte art</span></div></div>
+    <div class="gi rv"><img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=700&q=85&fit=crop" alt="Coffee beans" loading="lazy"><div class="gi-ov"><span class="gi-cap">Single origin</span></div></div>
+    <div class="gi rv"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=700&q=85&fit=crop" alt="Barista" loading="lazy"><div class="gi-ov"><span class="gi-cap">The craft</span></div></div>
+    <div class="gi rv"><img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=700&q=85&fit=crop" alt="Night café" loading="lazy"><div class="gi-ov"><span class="gi-cap">After midnight</span></div></div>
+    <div class="gi rv"><img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=700&q=85&fit=crop" alt="Espresso close-up" loading="lazy"><div class="gi-ov"><span class="gi-cap">The espresso</span></div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="test-hd"><span class="s-eye rv">Voices of the night</span><h2 class="s-title rv">What Our Guests Say</h2></div>
+  <div class="test-grid">
+    <div class="tc rv"><div class="tc-q">&ldquo;</div><div class="tc-stars"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div><p class="tc-tx">The moment you walk in, time slows. The amber lights, the coffee aroma, the quiet hum &mdash; Midnight Brew is the only place I think clearly past midnight.</p><div class="tc-au"><div class="tc-av">A</div><div><div class="tc-name">Ayesha Malik</div><div class="tc-meta">Writer &middot; Karachi</div></div></div></div>
+    <div class="tc rv"><div class="tc-q">&ldquo;</div><div class="tc-stars"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div><p class="tc-tx">I&rsquo;ve been to caf&eacute;s all over the world. Midnight Brew has something none of them have &mdash; soul. The Iced Spanish Latte alone is worth the visit.</p><div class="tc-au"><div class="tc-av">Z</div><div><div class="tc-name">Zain Ahmed</div><div class="tc-meta">Photographer &middot; Lahore</div></div></div></div>
+    <div class="tc rv"><div class="tc-q">&ldquo;</div><div class="tc-stars"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div><p class="tc-tx">My deadline-night companion. The brownie and espresso at 2am hits different surrounded by that warm cozy glow. This place genuinely saved my project.</p><div class="tc-au"><div class="tc-av">S</div><div><div class="tc-name">Sara Qureshi</div><div class="tc-meta">Designer &middot; Karachi</div></div></div></div>
+  </div>
+</section>
+
+<!-- CONTACT / RESERVATION -->
+<section id="contact">
+  <div class="con-grid">
+    <!-- INFO COLUMN -->
+    <div>
+      <span class="s-eye rv">Make a reservation</span>
+      <h2 class="con-heading rv">Reserve your spot<br>at the <em style="font-style:italic;color:var(--goldL)">Midnight Brew</em></h2>
+      <div class="s-divider rv"></div>
+      <div class="con-det rv"><div class="con-det-lbl">Location</div><div class="con-det-val">26-B Zamzama Blvd, Phase V, DHA, Karachi</div></div>
+      <div class="con-det rv"><div class="con-det-lbl">Hours</div><div class="con-det-val">6:00 PM &mdash; 3:00 AM, Daily</div></div>
+      <div class="con-det rv"><div class="con-det-lbl">Phone</div><div class="con-det-val">+92 300 MIDNIGHT</div></div>
+      <div class="con-det rv"><div class="con-det-lbl">Email</div><div class="con-det-val">hello@midnightbrew.pk</div></div>
+    </div>
+
+    <!-- RESERVATION FORM COLUMN -->
+    <div class="con-form rv" id="res-form-wrap">
+      <div class="fg-row">
+        <div class="fg">
+          <label for="r-name">Full Name *</label>
+          <input id="r-name" type="text" placeholder="Your name" autocomplete="name" required>
+        </div>
+        <div class="fg">
+          <label for="r-email">Email Address *</label>
+          <input id="r-email" type="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label for="r-phone">Phone Number</label>
+          <input id="r-phone" type="tel" placeholder="+92 300 0000000" autocomplete="tel">
+        </div>
+        <div class="fg">
+          <label for="r-guests">Number of Guests *</label>
+          <select id="r-guests">
+            <option value="1">1 Guest</option>
+            <option value="2" selected>2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+            <option value="5">5 Guests</option>
+            <option value="6">6 Guests</option>
+            <option value="7">7 Guests</option>
+            <option value="8">8+ Guests</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label for="r-date">Preferred Date</label>
+          <input id="r-date" type="date">
+        </div>
+        <div class="fg">
+          <label for="r-time">Preferred Time</label>
+          <select id="r-time">
+            <option value="">Select time</option>
+            <option value="6:00 PM">6:00 PM</option>
+            <option value="7:00 PM">7:00 PM</option>
+            <option value="8:00 PM">8:00 PM</option>
+            <option value="9:00 PM">9:00 PM</option>
+            <option value="10:00 PM">10:00 PM</option>
+            <option value="11:00 PM">11:00 PM</option>
+            <option value="12:00 AM">12:00 AM (Midnight)</option>
+            <option value="1:00 AM">1:00 AM</option>
+            <option value="2:00 AM">2:00 AM</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label for="r-msg">Special Requests</label>
+        <textarea id="r-msg" rows="3" placeholder="Birthday celebration, dietary requirements, seating preference..."></textarea>
+      </div>
+      <button type="button" class="con-submit" id="res-btn">
+        Confirm Reservation &nbsp;&rarr;
+      </button>
+      <div class="form-msg" id="form-msg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-logo">Midnight Brew</div>
+    <div class="foot-copy">&copy; 2025 Midnight Brew &middot; All rights reserved</div>
+    <div class="foot-socials">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="#" aria-label="Facebook">Facebook</a>
+      <a href="#" aria-label="TikTok">TikTok</a>
+    </div>
+  </div>
+</footer>
+
+<!-- =====================================================
+     AI CHATBOT WIDGET
+     ===================================================== -->
+<!-- Floating Help Button -->
+<button id="chat-btn" aria-label="Open chat assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  Help
+</button>
+
+<!-- Chat Panel -->
+<div id="chat-panel" role="dialog" aria-label="Midnight Brew Assistant">
+  <!-- Header -->
+  <div class="chat-head">
+    <div class="chat-head-left">
+      <div class="chat-av">MB</div>
+      <div>
+        <div class="chat-brand">Midnight Brew AI</div>
+        <div class="chat-status">&#9679; Online now</div>
+      </div>
+    </div>
+    <button class="chat-close" id="chat-close" aria-label="Close chat">&times;</button>
+  </div>
+  <!-- Messages -->
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <!-- Input -->
+  <div class="chat-foot">
+    <input id="chat-input" type="text" placeholder="Ask about menu, hours, reservations..." autocomplete="off">
+    <button id="chat-send" aria-label="Send message">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- =====================================================
+     SCRIPTS
+     ===================================================== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<!-- Supabase JS v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+var SUPABASE_URL  = 'https://osfdxecaherpvenycvxk.supabase.co';
+var SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zZmR4ZWNhaGVycHZlbnljdnhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MjExMDgsImV4cCI6MjA4NjQ5NzEwOH0.mCYrZRx4DqRBskA7JrIIL-buiEs6hk6MN5_ozvt904M';
+// Email via FormSubmit — first submission triggers verification to bilalnadeem6767@gmail.com
+var NOTIFY_EMAIL  = 'bilalnadeem6767@gmail.com';
+
+// Supabase client
+var supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* ============================================================
+   PRELOADER
+   ============================================================ */
+document.body.style.overflow = 'hidden';
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    var pl = document.getElementById('pl');
+    if (pl) pl.classList.add('out');
+    document.body.style.overflow = '';
+    boot();
+  }, 3400);
+});
+
+/* ============================================================
+   HERO CANVAS — atmospheric warm-light particles
+   ============================================================ */
+(function () {
+  var cvs = document.getElementById('hcanvas');
+  if (!cvs) return;
+  var ctx = cvs.getContext('2d');
+  var W = 0, H = 0, PS = [];
+  function resize() { W = cvs.width = cvs.offsetWidth; H = cvs.height = cvs.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function mkP() { return { x: Math.random()*W, y: H*(0.35+Math.random()*0.65), vx: (Math.random()-0.5)*0.22, vy: -(Math.random()*0.5+0.18), r: Math.random()*72+22, a: Math.random()*0.05+0.008, lf: 0, mx: Math.random()*330+170 }; }
+  for (var i = 0; i < 22; i++) { var p = mkP(); p.y = Math.random()*H; p.lf = Math.random()*p.mx; PS.push(p); }
+  (function draw() {
+    ctx.clearRect(0,0,W,H);
+    for (var i = 0; i < PS.length; i++) {
+      var p = PS[i]; p.x+=p.vx; p.y+=p.vy; p.lf++;
+      var al = p.a * Math.sin((p.lf/p.mx)*Math.PI);
+      var g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+      g.addColorStop(0,'rgba(195,128,48,'+al+')');
+      g.addColorStop(0.5,'rgba(165,95,32,'+(al*0.38)+')');
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+      if (p.lf >= p.mx) PS[i] = mkP();
+    }
+    requestAnimationFrame(draw);
+  })();
+})();
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+(function () {
+  var $cd = document.getElementById('cd'), $cr = document.getElementById('cr');
+  if (!$cd) return;
+  var mx=-300, my=-300, rx=-300, ry=-300;
+  window.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; $cd.style.left=mx+'px'; $cd.style.top=my+'px'; });
+  (function lerp(){ rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1; $cr.style.left=rx+'px'; $cr.style.top=ry+'px'; requestAnimationFrame(lerp); })();
+  document.querySelectorAll('a,button,.mc,.gi,.tc,input,textarea,select').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ document.body.classList.add('ch'); });
+    el.addEventListener('mouseleave', function(){ document.body.classList.remove('ch'); });
+  });
+})();
+
+/* ============================================================
+   LENIS
+   ============================================================ */
+var lenis = new Lenis({ lerp: 0.075, smoothWheel: true, syncTouch: false, touchMultiplier: 1.8 });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+gsap.ticker.lagSmoothing(0);
+
+/* ============================================================
+   SMOOTH SCROLL UTILITY
+   ============================================================ */
+function goTo(href) {
+  var target = document.querySelector(href);
+  if (!target) return;
+  lenis.scrollTo(target, { offset: -65, duration: 1.8, easing: function(t){ return 1-Math.pow(1-t,4); } });
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click', function(e){ e.preventDefault(); goTo(a.getAttribute('href')); closeMobile(); });
+});
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+var $brg = document.getElementById('brg'), $mm = document.getElementById('mmenu');
+function closeMobile(){ if(!$mm)return; $mm.classList.remove('o'); $brg.classList.remove('o'); document.body.style.overflow=''; }
+if ($brg && $mm) {
+  $brg.addEventListener('click', function(){ var open=$mm.classList.toggle('o'); $brg.classList.toggle('o',open); document.body.style.overflow=open?'hidden':''; });
+  $mm.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var h=a.getAttribute('href'); closeMobile(); setTimeout(function(){ goTo(h); }, 320); }); });
+}
+
+/* ============================================================
+   MENU TABS
+   ============================================================ */
+(function(){
+  var tabs=document.querySelectorAll('.mtab'), tink=document.getElementById('tink');
+  if(!tink) return;
+  function posInk(tab){ tink.style.width=tab.offsetWidth+'px'; tink.style.transform='translateX('+tab.offsetLeft+'px)'; }
+  var active=document.querySelector('.mtab.on');
+  if(active) posInk(active);
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.classList.remove('on'); });
+      tab.classList.add('on'); posInk(tab);
+      document.querySelectorAll('.mpanel').forEach(function(p){ p.classList.remove('on'); });
+      var panel=document.getElementById('p-'+tab.dataset.target);
+      if(!panel) return;
+      panel.classList.add('on');
+      gsap.fromTo(panel.querySelectorAll('.mc'),{opacity:0,y:28},{opacity:1,y:0,duration:0.7,stagger:0.07,ease:'power3.out'});
+    });
+  });
+  window.addEventListener('resize', function(){ var at=document.querySelector('.mtab.on'); if(at) posInk(at); });
+})();
+
+/* ============================================================
+   RESERVATION FORM — Supabase + FormSubmit email
+   ============================================================ */
+document.getElementById('res-btn').addEventListener('click', async function() {
+  var btn  = this;
+  var msg  = document.getElementById('form-msg');
+  var name = document.getElementById('r-name').value.trim();
+  var email= document.getElementById('r-email').value.trim();
+  var phone= document.getElementById('r-phone').value.trim();
+  var guests=parseInt(document.getElementById('r-guests').value)||2;
+  var date = document.getElementById('r-date').value;
+  var time = document.getElementById('r-time').value;
+  var note = document.getElementById('r-msg').value.trim();
+
+  /* Basic validation */
+  if (!name || !email) {
+    msg.className='form-msg error';
+    msg.textContent='Please fill in your name and email address.';
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.className='form-msg error';
+    msg.textContent='Please enter a valid email address.';
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent='Sending...';
+  msg.className='form-msg'; msg.textContent='';
+
+  try {
+    /* 1 — Save to Supabase */
+    var dbPayload = { name:name, email:email, phone:phone||null, guests:guests, date:date||null, time:time||null, message:note||null };
+    var dbRes = await supa.from('reservations').insert([dbPayload]);
+    if (dbRes.error) throw new Error('Database error: ' + dbRes.error.message);
+
+    /* 2 — Email notification via FormSubmit (free, no account needed)
+       NOTE: First use will send a verification email to bilalnadeem6767@gmail.com
+       Click the confirmation link once — all future reservations arrive automatically */
+    var emailPayload = {
+      _subject: 'New Reservation — Midnight Brew',
+      name: name,
+      email: email,
+      phone: phone || 'Not provided',
+      guests: guests + ' guest(s)',
+      date: date || 'Flexible',
+      time: time || 'Flexible',
+      message: note || 'No special requests',
+      _template: 'table',
+      _captcha: 'false'
+    };
+    await fetch('https://formsubmit.co/ajax/' + NOTIFY_EMAIL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(emailPayload)
+    });
+    /* Email errors are non-blocking — reservation is already saved in Supabase */
+
+    /* 3 — Success UI */
+    msg.className='form-msg success';
+    msg.innerHTML='&#10003; &nbsp;Reservation confirmed! We&rsquo;ll reach out to <strong>'+email+'</strong> shortly. See you at midnight.';
+    ['r-name','r-email','r-phone','r-msg'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    document.getElementById('r-guests').value='2';
+    document.getElementById('r-date').value='';
+    document.getElementById('r-time').value='';
+
+  } catch (err) {
+    console.error('Reservation error:', err);
+    msg.className='form-msg error';
+    msg.textContent='Something went wrong. Please call us at +92 300 MIDNIGHT or email hello@midnightbrew.pk';
+  }
+
+  btn.disabled=false;
+  btn.innerHTML='Confirm Reservation &nbsp;&rarr;';
+});
+
+/* ============================================================
+   AI CHATBOT — powered by Pollinations AI (free, no API key)
+   ============================================================ */
+var chatOpen = false;
+var chatHistory = [];
+var SYSTEM_PROMPT = [
+  'You are the warm and knowledgeable AI assistant for Midnight Brew, a premium late-night café in Karachi, Pakistan.',
+  '',
+  'KEY FACTS:',
+  '- Location: 26-B Zamzama Blvd, Phase V, DHA, Karachi',
+  '- Hours: 6:00 PM — 3:00 AM, every day',
+  '- Founded: 2019. Over 12,000 happy guests.',
+  '- Vibe: Cozy, cinematic, premium, late-night. Warm amber lights, rain sounds, conversations.',
+  '',
+  'MENU:',
+  'COFFEE → Espresso $3 | Cappuccino $5 | Latte $5.50 | Mocha $6 | Cold Coffee $6 | Iced Spanish Latte $7',
+  'BAKERY → Chocolate Croissant $4 | Cheesecake $5 | Brownie $3.50 | Cookies $2',
+  '',
+  'RESERVATIONS: Via the website form, or call +92 300 MIDNIGHT, or email hello@midnightbrew.pk',
+  '',
+  'PERSONALITY RULES:',
+  '- Be warm, friendly, and slightly poetic — reflect the café atmosphere',
+  '- Keep answers concise (2-4 sentences max)',
+  '- Use em dashes and light formatting for elegance',
+  '- Never make up menu items or prices not listed above',
+  '- If unsure, direct them to call or email'
+].join('\n');
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  var panel = document.getElementById('chat-panel');
+  panel.classList.toggle('open', chatOpen);
+  if (chatOpen && chatHistory.length === 0) {
+    setTimeout(function(){ addBotMsg("Welcome to Midnight Brew &#9729; — I'm here to help with reservations, menu questions, or anything else. What can I do for you tonight?"); }, 300);
+  }
+  if (chatOpen) { setTimeout(function(){ document.getElementById('chat-input').focus(); }, 400); }
+}
+
+document.getElementById('chat-btn').addEventListener('click', toggleChat);
+document.getElementById('chat-close').addEventListener('click', toggleChat);
+
+function addBotMsg(text) {
+  var msgs = document.getElementById('chat-msgs');
+  var div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = '<div class="msg-bubble">' + text + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addUserMsg(text) {
+  var msgs = document.getElementById('chat-msgs');
+  var div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = '<div class="msg-bubble">' + escHtml(text) + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  var msgs = document.getElementById('chat-msgs');
+  var div = document.createElement('div');
+  div.className = 'msg bot'; div.id = 'typing-indicator';
+  div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function hideTyping() {
+  var el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function sendChat() {
+  var input = document.getElementById('chat-input');
+  var sendBtn = document.getElementById('chat-send');
+  var text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  sendBtn.disabled = true;
+  addUserMsg(text);
+
+  chatHistory.push({ role: 'user', content: text });
+  showTyping();
+
+  try {
+    var messages = [{ role: 'system', content: SYSTEM_PROMPT }].concat(chatHistory.slice(-8));
+
+    /* Pollinations AI — completely free, no API key required */
+    var res = await fetch('https://text.pollinations.ai/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: messages, model: 'openai', seed: 42 })
+    });
+
+    if (!res.ok) throw new Error('API error ' + res.status);
+    var reply = await res.text();
+    reply = reply.trim();
+
+    hideTyping();
+    addBotMsg(escHtml(reply).replace(/\n/g,'<br>'));
+    chatHistory.push({ role: 'assistant', content: reply });
+
+  } catch (err) {
+    hideTyping();
+    addBotMsg("Sorry, I&rsquo;m having trouble connecting right now. Please call us at +92 300 MIDNIGHT or email hello@midnightbrew.pk &mdash; we&rsquo;re always happy to help.");
+    console.error('Chat error:', err);
+  }
+
+  sendBtn.disabled = false;
+  document.getElementById('chat-input').focus();
+}
+
+document.getElementById('chat-send').addEventListener('click', sendChat);
+document.getElementById('chat-input').addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+});
+
+/* ============================================================
+   GSAP + ScrollTrigger BOOT
+   ============================================================ */
+function boot() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  ScrollTrigger.create({
+    start: 'top -55px',
+    onEnter:     function(){ document.getElementById('nav').classList.add('sc'); },
+    onLeaveBack: function(){ document.getElementById('nav').classList.remove('sc'); }
+  });
+
+  /* Hero entrance */
+  var heroTL = gsap.timeline({ defaults: { ease: 'power4.out' }, delay: 0.15 });
+  heroTL
+    .fromTo('.h-eye',    { opacity:0, y:14 }, { opacity:1, y:0, duration:1 })
+    .to('.h-title .ti',  { y:'0%', duration:1.3, stagger:0.12 }, '-=0.65')
+    .fromTo('.h-sub',    { opacity:0, y:18 }, { opacity:1, y:0, duration:1 }, '-=0.65')
+    .fromTo('.h-btn',    { opacity:0, y:18 }, { opacity:1, y:0, duration:0.9 }, '-=0.6')
+    .fromTo('.h-scroll', { opacity:0 },       { opacity:1, duration:0.9 }, '-=0.4');
+
+  /* Generic reveal */
+  gsap.utils.toArray('.rv').forEach(function(el){
+    gsap.to(el, { opacity:1, y:0, duration:.95, ease:'power3.out', scrollTrigger: { trigger:el, start:'top 88%', toggleActions:'play none none none' } });
+  });
+
+  /* Parallax */
+  gsap.to('.hero-content', { y:120, ease:'none', scrollTrigger: { trigger:'#hero', start:'top top', end:'bottom top', scrub:1.5 } });
+  gsap.to('.about-yr',     { y:-80, ease:'none', scrollTrigger: { trigger:'#about', start:'top bottom', end:'bottom top', scrub:2 } });
+  gsap.to('.hglow-a',      { y:-60, x:28, ease:'none', scrollTrigger: { trigger:'#hero', start:'top top', end:'bottom top', scrub:2 } });
+  gsap.to('.hglow-b',      { y:-40, ease:'none', scrollTrigger: { trigger:'#hero', start:'top top', end:'bottom top', scrub:3 } });
+
+  /* Gallery stagger */
+  document.querySelectorAll('.gi').forEach(function(item, i){
+    gsap.fromTo(item, { opacity:0, y:70 }, { opacity:1, y:0, duration:1, delay:(i%3)*0.11, ease:'power3.out', scrollTrigger: { trigger:item, start:'top 92%', toggleActions:'play none none none' } });
+  });
+
+  /* Menu cards */
+  document.querySelectorAll('.mc').forEach(function(card, i){
+    gsap.fromTo(card, { opacity:0, y:44 }, { opacity:1, y:0, duration:.85, delay:(i%4)*0.08, ease:'power3.out', scrollTrigger: { trigger:card, start:'top 92%', toggleActions:'play none none none' } });
+  });
+
+  /* Testimonials */
+  document.querySelectorAll('.tc').forEach(function(card, i){
+    gsap.fromTo(card, { opacity:0, y:50 }, { opacity:1, y:0, duration:1, delay:i*0.14, ease:'power3.out', scrollTrigger: { trigger:card, start:'top 90%', toggleActions:'play none none none' } });
+  });
+
+  /* Contact form slide in */
+  gsap.fromTo('#res-form-wrap', { opacity:0, x:40 }, { opacity:1, x:0, duration:1, ease:'power3.out', scrollTrigger: { trigger:'#res-form-wrap', start:'top 85%', toggleActions:'play none none none' } });
+}
+</script>
+</body>
+</html>
